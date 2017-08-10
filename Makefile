@@ -6,7 +6,7 @@
 #    By: banthony <banthony@students.42.fr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/11/23 16:22:07 by banthony          #+#    #+#              #
-#    Updated: 2017/08/10 15:25:20 by banthony         ###   ########.fr        #
+#    Updated: 2017/08/10 17:33:04 by banthony         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -40,7 +40,7 @@ HEAD_DIR = -I ./include -I $(PATH_LIBFT)
 
 LIB = -L $(PATH_LIBFT)  -lft
 
-FLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
+FLAGS = -Wall -Wextra -Werror -g3 #-fsanitize=address
 
 all: $(NAME2)
 
@@ -54,10 +54,16 @@ $(NAME2): $(SRC) $(INCLUDE)
 test: $(NAME2)
 	gcc $(FLAGS) $(NAME2) $(HEAD_DIR) $(LIB) ./src/main.c
 
+real: $(SRC) $(INCLUDE)
+	make -C $(PATH_LIBFT) debug
+	gcc $(FLAGS) $(HEAD_DIR) -c $(SRC)
+	mv $(OBJ) $(PATH_SRC)
+	gcc -o real_malloc $(OBJ2) $(HEAD_DIR) $(LIB) $(FLAGS) ./src/main.c
+
 clean:
 	make clean -C $(PATH_LIBFT)
 	rm -f $(OBJ2)
-	rm -rf ./a.out a.out.dSYM
+	rm -rf ./a.out a.out.dSYM ./real_malloc ./real_malloc.dSYM
 
 fclean: clean
 	rm -f $(NAME2) $(NAME1)

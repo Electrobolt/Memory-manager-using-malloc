@@ -6,17 +6,21 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/10 14:16:40 by banthony          #+#    #+#             */
-/*   Updated: 2017/08/10 15:20:19 by banthony         ###   ########.fr       */
+/*   Updated: 2017/08/10 16:18:20 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
 
-void	*malloc(size_t size)
+void	*my_malloc(size_t size)
 {
-	if (size)
-		ft_putnbrendl(size);
-	return (NULL);
+	char *str;
+
+	str = NULL;
+	if (!size)
+		return (NULL);
+	str = (char*)mmap(NULL, size + 1, PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
+	return (str);
 }
 
 
