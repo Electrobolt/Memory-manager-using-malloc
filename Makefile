@@ -6,7 +6,7 @@
 #    By: banthony <banthony@students.42.fr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/11/23 16:22:07 by banthony          #+#    #+#              #
-#    Updated: 2017/08/10 17:33:04 by banthony         ###   ########.fr        #
+#    Updated: 2017/08/21 15:08:34 by banthony         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -40,7 +40,7 @@ HEAD_DIR = -I ./include -I $(PATH_LIBFT)
 
 LIB = -L $(PATH_LIBFT)  -lft
 
-FLAGS = -Wall -Wextra -Werror -g3 #-fsanitize=address
+FLAGS = -Wall -Wextra -Werror -Weverything -g3 #-fsanitize=address
 
 all: $(NAME2)
 
@@ -51,7 +51,7 @@ $(NAME2): $(SRC) $(INCLUDE)
 	gcc -o $(NAME1) -shared $(OBJ2) $(HEAD_DIR) $(LIB) $(FLAGS)
 	ln -s $(NAME1) $(NAME2)
 
-test: $(NAME2)
+test: $(NAME2) $(SRC)
 	gcc $(FLAGS) $(NAME2) $(HEAD_DIR) $(LIB) ./src/main.c
 
 real: $(SRC) $(INCLUDE)
