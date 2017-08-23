@@ -6,7 +6,7 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 17:41:29 by banthony          #+#    #+#             */
-/*   Updated: 2017/08/21 19:31:30 by banthony         ###   ########.fr       */
+/*   Updated: 2017/08/23 19:21:58 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,30 +46,14 @@ typedef enum		e_tag
 typedef struct		s_area
 {
 	void			*adr;
-	struct s_list	*flst;
 	size_t			size;
-	char			tag;
+	struct s_list	*flst;
+	char			tag[2];
 	struct s_area	*next;
-	struct s_area	*prev;
 }					t_area;
 
+void				my_free(void *ptr);
 void				*my_malloc(size_t size);
+void				*my_realloc(void *ptr, size_t size);
 
 #endif
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
