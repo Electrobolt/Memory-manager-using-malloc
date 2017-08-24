@@ -6,7 +6,7 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 17:41:29 by banthony          #+#    #+#             */
-/*   Updated: 2017/08/23 19:21:58 by banthony         ###   ########.fr       */
+/*   Updated: 2017/08/24 23:35:02 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ typedef struct		s_area
 	void			*adr;
 	size_t			size;
 	struct s_list	*flst;
-	char			tag[2];
 	struct s_area	*next;
+	char			tag[8];
 }					t_area;
 
 void				my_free(void *ptr);
