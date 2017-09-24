@@ -6,7 +6,7 @@
 #    By: banthony <banthony@students.42.fr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/11/23 16:22:07 by banthony          #+#    #+#              #
-#    Updated: 2017/08/24 23:38:58 by banthony         ###   ########.fr        #
+#    Updated: 2017/09/24 15:34:20 by banthony         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -26,7 +26,7 @@ PATH_HEAD = ./include/
 
 HEADER_FILE = malloc.h	\
 
-SRC_FILE = 	malloc.c	\
+SRC_FILE = 	malloc.c	main.c\
 
 SRC = $(SRC_FILE:%c=$(PATH_SRC)%c)
 
@@ -55,10 +55,10 @@ test: $(NAME2) $(SRC)
 	gcc $(FLAGS) $(NAME2) $(HEAD_DIR) $(LIB) ./src/main.c
 
 real: $(SRC) $(INCLUDE)
-	make debug -C $(PATH_LIBFT)
+	make -C $(PATH_LIBFT) debug
 	gcc $(FLAGS) $(HEAD_DIR) -c $(SRC)
 	mv $(OBJ) $(PATH_SRC)
-	gcc -o real_malloc $(OBJ2) $(HEAD_DIR) $(LIB) $(FLAGS) ./src/main.c
+	gcc -o real_malloc $(OBJ2) $(HEAD_DIR) $(LIB) $(FLAGS)
 
 clean:
 	make clean -C $(PATH_LIBFT)

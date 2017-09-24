@@ -6,7 +6,7 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 17:41:29 by banthony          #+#    #+#             */
-/*   Updated: 2017/08/24 23:35:02 by banthony         ###   ########.fr       */
+/*   Updated: 2017/09/24 19:11:15 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,13 @@
 #define M 512
 
 /*
+**	Permet d'aligner la taille, et de toujours
+**	demander un multiple de 4 a mmap.
+*/
+
+#define align(x) (((((x)-1)>>2)<<2)+4)
+
+/*
 **	Tag pour les tailles des zones memoire, & etat de la freelist:
 **	TINY	= [1 ; N]
 **	SMALL	= [(N + 1) ; M]
@@ -32,28 +39,39 @@
 **	EMPTY	= Freelist totalement libre
 **	PARTIAL	= Freelist compose de blocks libre et reserve
 **	FULL	= Freelist totalement reserve
+**	DATA	= Doit correspondre a tag[8], Fin de la metadata debut des Data users
 */
 
 typedef enum		e_tag
 {
-	VOID, TINY, SMALL, LARGE, EMPTY, PARTIAL, FULL,
+	STATE, TYPE, TINY, SMALL, LARGE, EMPTY, PARTIAL, FULL, DATA,
 }					t_tag;
 
 /*
 **	Stockage Metadata
 */
 
-typedef struct		s_area
+typedef struct		s_page
 {
-	void			*adr;
 	size_t			size;
-	struct s_list	*flst;
-	struct s_area	*next;
+	struct s_page	*next;
 	char			tag[8];
-}					t_area;
+}					t_page;
 
 void				my_free(void *ptr);
 void				*my_malloc(size_t size);
 void				*my_realloc(void *ptr, size_t size);
+void				show_mem(void);
 
 #endif
+
+
+
+
+
+
+
+
+
+
+
