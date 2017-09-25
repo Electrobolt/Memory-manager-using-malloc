@@ -6,7 +6,7 @@
 #    By: banthony <banthony@students.42.fr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/11/23 16:22:07 by banthony          #+#    #+#              #
-#    Updated: 2017/09/24 15:34:20 by banthony         ###   ########.fr        #
+#    Updated: 2017/09/25 18:45:52 by banthony         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -40,7 +40,7 @@ HEAD_DIR = -I ./include -I $(PATH_LIBFT)
 
 LIB = -L $(PATH_LIBFT)  -lft
 
-FLAGS = -Wall -Wextra -Werror -g3 #-Weverything #-fsanitize=address
+FLAGS = -Wall -Wextra -Werror -g3 -Weverything -fsanitize=address
 
 all: $(NAME2)
 
