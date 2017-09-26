@@ -6,7 +6,7 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 15:09:11 by banthony          #+#    #+#             */
-/*   Updated: 2017/09/25 18:45:26 by banthony         ###   ########.fr       */
+/*   Updated: 2017/09/26 20:25:19 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,30 +16,14 @@ void	*mem = NULL;
 char	endpage[6] = "PAGE->";
 char	enddata[6] = "DATA->";
 
-void	show_alloc_mem_ex(void)
-{
-	t_page *p;
-
-	p = (t_page*)mem;
-	while(p)
-	{
-		ft_putstrcol(BLUE, "Taille de la page:");
-		ft_putstr(GREEN);
-		ft_putnbrendl((int)p->size);
-		ft_putstr(WHITE);
-		ft_print_memory(p, p->size);
-		p = p->next;
-	}
-}
-
 size_t	get_limit(size_t s)
 {
 	size_t n;
 
 	n = 0;
-	if (s < TINY_LIMIT)
+	if (s <= TINY_LIMIT)
 		n = TINY_LIMIT;
-	if (s < SMALL_LIMIT && s > TINY_LIMIT)
+	if (s <= SMALL_LIMIT && s > TINY_LIMIT)
 		n = SMALL_LIMIT;
 	if (s > SMALL_LIMIT)
 		n = s;
@@ -53,15 +37,18 @@ t_page	*new_page(t_page *page, size_t s)
 	size_t	n;
 
 	n = get_limit(s);
-	if (!(b = (t_page*)mmap(NULL, (sizeof(t_page) + n), PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0)))
+	if (!(b = mmap(NULL, (sizeof(t_page) + n), PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0)))
 		return (NULL);
-	ft_memset(b, 0, sizeof(b));
+	ft_memset(b, 0, sizeof(t_page) + n);
 	b->size = n;
-	b->tag[STATE] = EMPTY;
-	ft_strncpy(&b->tag[2], endpage, 6);
+	b->tag[STATE] = PARTIAL;
+	if (b->size == s)
+		b->tag[STATE] = FULL;
+	ft_strncpy(&b->tag[2], endpage, 6);// provisoire
 	p = (void*)&b->tag[DATA];
 	p->size = s;
-	ft_strncpy(&p->tag[2], enddata, 6);
+	p->tag[STATE] = FULL;
+	ft_strncpy(&p->tag[2], enddata, 6);//provisoire
 	if (page)
 	{
 		while (page->next)
@@ -84,15 +71,18 @@ t_mdata	*find_space(t_page *p, size_t s)
 	tmp = (void*)&p->tag[DATA];
 	while (tmp->next)
 	{
-		reserved += tmp->size;
+		reserved += (tmp->size + sizeof(t_mdata));
 		tmp = tmp->next;
 	}
-	printf("size:%lu - res:%lu\n", tmp->size, reserved);
+	reserved += (tmp->size + sizeof(t_mdata));
 	if (p->size >= (reserved + sizeof(t_mdata) + s))
 	{
 		last = (void*)((char*)&tmp->tag[DATA] + tmp->size);
 		last->next = NULL;
 		last->size = s;
+		last->tag[STATE] = FULL;
+		if (p->size == (reserved + sizeof(t_mdata) + s))
+			p->tag[STATE] = FULL;
 		tmp->next = last;
 		ft_strncpy(&last->tag[2], enddata, 6);
 	}
@@ -112,7 +102,6 @@ t_mdata	*get_free_mem(t_page *p, size_t s)
 	page = p;
 	while (page)
 	{
-		printf("size:%lu - lim:%lu\n", page->size, lim);
 		if (page->size == lim && page->tag[STATE] <= PARTIAL)
 			if ((last = find_space(page, s)))
 				break ;

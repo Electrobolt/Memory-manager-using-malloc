@@ -6,7 +6,7 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/10 15:19:51 by banthony          #+#    #+#             */
-/*   Updated: 2017/09/25 18:43:46 by banthony         ###   ########.fr       */
+/*   Updated: 2017/09/26 21:34:30 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@
 
 int main(void)
 {
-	char *str, *str2, *str3, *str4;
+	char *str, *str2, *str3, *str5;
+	char *str4, *str6;
+	char *str7, *str8, *str9;
+	int i = 0;
 
 /*	printf("Struct t_area size:%lu\n", s);
 	printf("\tvoid\t*adr:%lu\n", sizeof(void*));
@@ -26,14 +29,43 @@ int main(void)
 	printf("\ts_area\t*next:%lu\n", sizeof(struct s_area));
 	printf("\tchar\ttag[8]:%lu\n", sizeof(char[8]));
 */	printf("page:%lu - mdata:%lu\n", sizeof(t_page), sizeof(t_mdata));
-	str = (char*)my_malloc(sizeof(char) * 8);
-	str2 = (char*)my_malloc(sizeof(char) * 24);
-	str3 = (char*)my_malloc(sizeof(char) * 513);
-	str4 = (char*)my_malloc(sizeof(char) * 513);
-	ft_strncpy(str, "DataData", 8);
-	ft_strncpy(str2, "Pokemon/Pokeball/Pikachu", 24);
-	ft_strncpy(str3, "SALUT", 513);
-	ft_strncpy(str4, "DataData", 513);
+	str = (char*)my_malloc(sizeof(char) * 40);
+	str2 = (char*)my_malloc(sizeof(char) * 40);
+	str3 = (char*)my_malloc(sizeof(char) * 40);
+	str4 = (char*)my_malloc(sizeof(char) * 40);
+	str5 = (char*)my_malloc(sizeof(char) * 40);
+	str6 = (char*)my_malloc(sizeof(char) * 40);
+	str7 = (char*)my_malloc(sizeof(char) * 40);
+	str8 = (char*)my_malloc(sizeof(char) * 40);
+	str9 = (char*)my_malloc(sizeof(char) * 200);
+	while (i < 40)
+	{
+		ft_strncpy(&str[i], "X", 1);
+		ft_strncpy(&str2[i], "X", 1);
+		ft_strncpy(&str3[i], "X", 1);
+		ft_strncpy(&str4[i], "X", 1);
+		ft_strncpy(&str5[i], "X", 1);
+		ft_strncpy(&str6[i], "X", 1);
+		ft_strncpy(&str7[i], "X", 1);
+		ft_strncpy(&str8[i], "X", 1);
+		i++;
+	}
+	i = 0;
+	while (i < 200)
+	{
+		ft_strncpy(&str9[i], "X", 1);
+		i++;
+	}
+
+	my_free(str6);
+	my_free(str4);
+	my_free(str);
+//	my_free(str3);
+	my_free(str5);
+	my_free(str2);
+//	my_free(str7);
+	my_free(str8);
+//	my_free(str9);
 	// Affichage de la memoire
 	show_alloc_mem_ex();
 }

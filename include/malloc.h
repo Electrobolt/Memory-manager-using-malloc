@@ -6,7 +6,7 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 17:41:29 by banthony          #+#    #+#             */
-/*   Updated: 2017/09/25 18:45:22 by banthony         ###   ########.fr       */
+/*   Updated: 2017/09/26 19:11:14 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 **	demander un multiple de 4 a mmap.
 */
 
-#define align(x) (((((x)-1)>>2)<<2)+4)
+#define align(x) (((((x)-1)/4)*4)+4)
 
 /*
 **	Tag pour les tailles des zones memoire, & etat de la freelist:
@@ -86,24 +86,6 @@ t_page				*new_page(t_page *page, size_t s);
 t_mdata				*find_space(t_page *p, size_t s);
 t_mdata				*get_free_mem(t_page *p, size_t s);
 size_t				get_limit(size_t s);
+void				defrag_mem(void);
 
 #endif
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
