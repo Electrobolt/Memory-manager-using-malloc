@@ -6,7 +6,7 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/26 16:01:38 by banthony          #+#    #+#             */
-/*   Updated: 2017/09/26 21:37:53 by banthony         ###   ########.fr       */
+/*   Updated: 2017/09/26 21:48:24 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,10 @@ static void get_data_detail(t_page *p)
 	}
 	ft_putstrcol(BLUE, "Total Block: ");
 	ft_putstr(GREEN);
-	ft_putnbrendl((int)(n + r));
+	ft_putnbrendl((int)n);
 	ft_putstrcol(BLUE, "Reserve: ");
 	ft_putstr(GREEN);
-	ft_putnbrendl((int)n);
+	ft_putnbrendl((int)(n - r));
 	ft_putstrcol(BLUE, "Libres: ");
 	ft_putstr(GREEN);
 	ft_putnbrendl((int)r);
