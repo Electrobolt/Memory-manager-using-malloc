@@ -6,15 +6,15 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 15:09:11 by banthony          #+#    #+#             */
-/*   Updated: 2017/09/26 20:25:19 by banthony         ###   ########.fr       */
+/*   Updated: 2017/09/27 16:57:37 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
 
-void	*mem = NULL;
-char	endpage[6] = "PAGE->";
-char	enddata[6] = "DATA->";
+void *g_mem = NULL;
+char g_endpage[6] = "PAGE->";
+char g_enddata[6] = "DATA->";
 
 size_t	get_limit(size_t s)
 {
@@ -37,23 +37,25 @@ t_page	*new_page(t_page *page, size_t s)
 	size_t	n;
 
 	n = get_limit(s);
-	if (!(b = mmap(NULL, (sizeof(t_page) + n), PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0)))
+	if (!(b = mmap(NULL, (sizeof(t_page) + n),
+			PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0)))
 		return (NULL);
 	ft_memset(b, 0, sizeof(t_page) + n);
 	b->size = n;
 	b->tag[STATE] = PARTIAL;
 	if (b->size == s)
 		b->tag[STATE] = FULL;
-	ft_strncpy(&b->tag[2], endpage, 6);// provisoire
+	ft_strncpy(&b->tag[2], g_endpage, 6);// provisoire
 	p = (void*)&b->tag[DATA];
 	p->size = s;
 	p->tag[STATE] = FULL;
-	ft_strncpy(&p->tag[2], enddata, 6);//provisoire
+	ft_strncpy(&p->tag[2], g_enddata, 6);//provisoire
 	if (page)
 	{
 		while (page->next)
 			page = page->next;
 		page->next = b;
+		b->prev = page;
 	}
 	return (b);
 }
@@ -65,9 +67,9 @@ t_mdata	*find_space(t_page *p, size_t s)
 	size_t	reserved;
 
 	reserved = 0;
-	last = NULL;
 	if (!p)
 		return (NULL);
+	last = NULL;
 	tmp = (void*)&p->tag[DATA];
 	while (tmp->next)
 	{
@@ -78,13 +80,12 @@ t_mdata	*find_space(t_page *p, size_t s)
 	if (p->size >= (reserved + sizeof(t_mdata) + s))
 	{
 		last = (void*)((char*)&tmp->tag[DATA] + tmp->size);
-		last->next = NULL;
 		last->size = s;
 		last->tag[STATE] = FULL;
 		if (p->size == (reserved + sizeof(t_mdata) + s))
 			p->tag[STATE] = FULL;
 		tmp->next = last;
-		ft_strncpy(&last->tag[2], enddata, 6);
+		ft_strncpy(&last->tag[2], g_enddata, 6);//provisoire
 	}
 	return (last);
 }
@@ -115,18 +116,18 @@ void	*my_malloc(size_t size)
 	t_page	*p;
 	t_mdata	*tmp;
 
-	if (!mem)	// Premier appel
+	if (!g_mem)
 	{
-		if (!(p = new_page(NULL, align(size))))
+		if (!(p = new_page(NULL, ALIGN(size))))
 			return (NULL);
-		mem = p;
+		g_mem = p;
 	}
 	else
 	{
-		p = mem;
-		if (!(tmp = get_free_mem(p, align(size))))
+		p = g_mem;
+		if (!(tmp = get_free_mem(p, ALIGN(size))))
 		{
-			if (!(p = new_page(p, align(size))))
+			if (!(p = new_page(p, ALIGN(size))))
 				return (NULL);
 		}
 		else

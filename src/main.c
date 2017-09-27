@@ -6,7 +6,7 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/10 15:19:51 by banthony          #+#    #+#             */
-/*   Updated: 2017/09/26 21:53:00 by banthony         ###   ########.fr       */
+/*   Updated: 2017/09/27 16:53:42 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ int main(void)
 	str5 = (char*)my_malloc(sizeof(char) * 40);
 	str6 = (char*)my_malloc(sizeof(char) * 40);
 	str7 = (char*)my_malloc(sizeof(char) * 40);
-	str8 = (char*)my_malloc(sizeof(char) * 40);
-	str9 = (char*)my_malloc(sizeof(char) * 200);
+	str8 = (char*)my_malloc(sizeof(char) * 200);
+	str9 = (char*)my_malloc(sizeof(char) * 1024);
 	while (i < 40)
 	{
 		ft_strncpy(&str[i], "X", 1);
@@ -47,25 +47,26 @@ int main(void)
 		ft_strncpy(&str5[i], "X", 1);
 		ft_strncpy(&str6[i], "X", 1);
 		ft_strncpy(&str7[i], "X", 1);
-		ft_strncpy(&str8[i], "X", 1);
 		i++;
 	}
 	i = 0;
-	while (i < 200)
+	while (i < 1024)
 	{
+		if (i < 200)
+			ft_strncpy(&str8[i], "X", 1);
 		ft_strncpy(&str9[i], "X", 1);
 		i++;
 	}
 
-//	my_free(str6);
-//	my_free(str4);
-//	my_free(str);
+	my_free(str6);
+	my_free(str4);
+	my_free(str);
 //	my_free(str3);
-//	my_free(str5);
-//	my_free(str2);
-//	my_free(str7);
-	my_free(str8);
-	my_free(str9);
+	my_free(str5);
+	my_free(str2);
+	my_free(str7);
+//	my_free(str8);
+//	my_free(str9);
 	// Affichage de la memoire
 	show_alloc_mem_ex();
 }
