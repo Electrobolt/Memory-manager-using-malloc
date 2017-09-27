@@ -6,7 +6,7 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 15:09:11 by banthony          #+#    #+#             */
-/*   Updated: 2017/09/27 16:57:37 by banthony         ###   ########.fr       */
+/*   Updated: 2017/09/27 20:45:51 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,6 @@ void *g_mem = NULL;
 char g_endpage[6] = "PAGE->";
 char g_enddata[6] = "DATA->";
 
-size_t	get_limit(size_t s)
-{
-	size_t n;
-
-	n = 0;
-	if (s <= TINY_LIMIT)
-		n = TINY_LIMIT;
-	if (s <= SMALL_LIMIT && s > TINY_LIMIT)
-		n = SMALL_LIMIT;
-	if (s > SMALL_LIMIT)
-		n = s;
-	return (n);
-}
-
 t_page	*new_page(t_page *page, size_t s)
 {
 	t_page	*b;
@@ -37,10 +23,10 @@ t_page	*new_page(t_page *page, size_t s)
 	size_t	n;
 
 	n = get_limit(s);
-	if (!(b = mmap(NULL, (sizeof(t_page) + n),
+	if (!(b = mmap(NULL, (PAGE_S + n),
 			PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0)))
 		return (NULL);
-	ft_memset(b, 0, sizeof(t_page) + n);
+	ft_memset(b, 0, PAGE_S + n);
 	b->size = n;
 	b->tag[STATE] = PARTIAL;
 	if (b->size == s)
@@ -60,6 +46,40 @@ t_page	*new_page(t_page *page, size_t s)
 	return (b);
 }
 
+/*
+  	Parcourir mdata
+	{
+		Si mdata empty
+			if (mdata->s < s + MDATA_S) //Block trop petit
+				continue ;
+			if (mdata->s >= s + MDATA_S) //Block assez grand ou egal au besoin
+			{
+				if (mdata->s > (s + (MDATA_S + DATA_MIN))) // (s + 24 + 4) = (s + 28)
+					split_block(mdata, s);
+					split mdata->tag[DATA] + s;
+					creer un new bloc avec le restant; //(new->s sera egale a DATA_MIN au minimum)
+					return le bloc pour l'utilisateur (s)
+				else
+					(mdata->s est inf a s + 28)
+					Utilisation du block existant sans faire de split;
+			}
+	}
+*/
+
+t_mdata	*split_block(t_mdata *d, size_t s)
+{
+	t_mdata *new;
+
+	// New positioner en memoire juste derriere d
+	new = (void*)((char*)&d->tag[DATA] + s);
+	// Insertion de new dans la liste
+	new->next = d->next;
+	d->next = new;
+	new->size = (d->size - (MDATA_S +  s));
+	d->size = s;
+	return (new);
+}
+
 t_mdata	*find_space(t_page *p, size_t s)
 {
 	t_mdata *tmp;
@@ -73,16 +93,17 @@ t_mdata	*find_space(t_page *p, size_t s)
 	tmp = (void*)&p->tag[DATA];
 	while (tmp->next)
 	{
-		reserved += (tmp->size + sizeof(t_mdata));
+		reserved += (tmp->size + MDATA_S);
 		tmp = tmp->next;
 	}
-	reserved += (tmp->size + sizeof(t_mdata));
-	if (p->size >= (reserved + sizeof(t_mdata) + s))
+	reserved += (tmp->size + MDATA_S);
+	if (p->size >= (reserved + MDATA_S + s))
 	{
 		last = (void*)((char*)&tmp->tag[DATA] + tmp->size);
 		last->size = s;
+//		last->next = NULL;	// Necessaire ?
 		last->tag[STATE] = FULL;
-		if (p->size == (reserved + sizeof(t_mdata) + s))
+		if (p->size == (reserved + MDATA_S + s))
 			p->tag[STATE] = FULL;
 		tmp->next = last;
 		ft_strncpy(&last->tag[2], g_enddata, 6);//provisoire
@@ -116,6 +137,8 @@ void	*my_malloc(size_t size)
 	t_page	*p;
 	t_mdata	*tmp;
 
+	if (size <= 0)
+		return (NULL);
 	if (!g_mem)
 	{
 		if (!(p = new_page(NULL, ALIGN(size))))
@@ -133,5 +156,5 @@ void	*my_malloc(size_t size)
 		else
 			return ((void*)&tmp->tag[DATA]);
 	}
-	return ((void*)((char*)&p->tag[DATA] + sizeof(t_mdata)));
+	return ((void*)((char*)&p->tag[DATA] + MDATA_S));
 }

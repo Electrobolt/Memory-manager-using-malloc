@@ -6,7 +6,7 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/26 16:17:08 by banthony          #+#    #+#             */
-/*   Updated: 2017/09/27 16:43:49 by banthony         ###   ########.fr       */
+/*   Updated: 2017/09/27 19:24:45 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,45 +21,23 @@
 
 static void	free_page(t_page *p)
 {
-	t_page	*tmp;
 	size_t	n;
 	size_t	f;
 
 	n = get_nb_block(p, BLOCK);
 	f = get_nb_block(p, EMPTY);
-	tmp = NULL;
 	if (n == f)
 	{
-		if ((tmp = p->prev))
+		if (p->prev)
 			p->prev->next = p->next;
-		if ((p->next))
+		if (p->next)
 		{
-			if (!tmp)
-				tmp = p->next;
+			if (!p->prev)
+				g_mem = p->next;
 			p->next->prev = p->prev;
 		}
-/*
-**	Important MaJ ptr glob, vers nouv tete de liste
-*/
-		g_mem = tmp;
 		munmap(p, p->size + PAGE_S);
 	}
-}
-
-size_t		get_nb_block(t_page *p, char state)
-{
-	t_mdata	*d;
-	size_t	n;
-
-	n = 0;
-	d = (void*)&p->tag[DATA];
-	while (d)
-	{
-		if (d->tag[STATE] == state || state == BLOCK)
-			n++;
-		d = d->next;
-	}
-	return (n);
 }
 
 void		defrag_mem(t_page *p)
@@ -86,7 +64,7 @@ void		my_free(void *ptr)
 	t_page	*p;
 	t_mdata	*d;
 
-	if (!(p = g_mem))
+	if (!ptr || !(p = g_mem))
 		return ;
 	while (p)
 	{

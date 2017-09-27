@@ -6,7 +6,7 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 17:41:29 by banthony          #+#    #+#             */
-/*   Updated: 2017/09/27 16:58:08 by banthony         ###   ########.fr       */
+/*   Updated: 2017/09/27 20:11:19 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,16 @@
 /*
 **	N = 1/16 choisi arbitrairement par rapport a M
 **	M = 1/8 de getpagesize() (Doc sur Slab Allocation)
+**	DATA_MIN = Valeur min d'un block issu d'un split_block()
+**	MALLOC_MAX = 4096 (4kbytes) * 250 = 1024kbytes
 */
 
 # define TINY_LIMIT (size_t)getpagesize()/8
 # define SMALL_LIMIT (size_t)getpagesize()/4
 # define MDATA_S sizeof(t_mdata)
 # define PAGE_S sizeof(t_page)
-
+# define DATA_MIN 4
+# define MALLOC_MAX (size_t)get_pagesize()*250
 /*
 **	Permet d'aligner la taille, et de toujours
 **	demander un multiple de 4 a mmap.
@@ -46,11 +49,17 @@
 **	FULL	= Freelist totalement reserve
 **	DATA	= Doit correspondre a tag[8],
 **			  Fin de la metadata debut des Data users
+**	BLOCK	= Utiliser dans get_nb_block comme parametre pour state,
+**			  Ce qui permet de compter tout les mdata quelquesoit sont STATE.
 */
 
 typedef enum		e_tag
 {
-	STATE, TYPE, TINY, SMALL, LARGE, EMPTY, PARTIAL, FULL, DATA, BLOCK,
+	STATE, TYPE,
+	TINY, SMALL, LARGE,
+	EMPTY, PARTIAL, FULL,
+	DATA,
+	BLOCK,
 }					t_tag;
 
 /*

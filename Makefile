@@ -6,7 +6,7 @@
 #    By: banthony <banthony@students.42.fr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/11/23 16:22:07 by banthony          #+#    #+#              #
-#    Updated: 2017/09/26 16:35:23 by banthony         ###   ########.fr        #
+#    Updated: 2017/09/27 18:21:48 by banthony         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -26,7 +26,7 @@ PATH_HEAD = ./include/
 
 HEADER_FILE = malloc.h	\
 
-SRC_FILE = 	malloc.c	main.c	show_alloc.c	free.c	\
+SRC_FILE = 	malloc.c	realloc.c	show_alloc.c	free.c	main.c	\
 
 SRC = $(SRC_FILE:%c=$(PATH_SRC)%c)
 

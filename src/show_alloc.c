@@ -6,7 +6,7 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/26 16:01:38 by banthony          #+#    #+#             */
-/*   Updated: 2017/09/27 17:00:16 by banthony         ###   ########.fr       */
+/*   Updated: 2017/09/27 17:14:17 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void		show_alloc_mem_ex(void)
 		get_page_type(p);
 		get_malloc_type(p);
 		get_data_detail(p);
-		ft_print_memory(p, (p->size + sizeof(t_page)));
+		ft_print_memory(p, (p->size + PAGE_S));
 		p = p->next;
 	}
 }
