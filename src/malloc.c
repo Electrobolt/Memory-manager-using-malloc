@@ -6,7 +6,7 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 15:09:11 by banthony          #+#    #+#             */
-/*   Updated: 2017/09/27 20:45:51 by banthony         ###   ########.fr       */
+/*   Updated: 2017/09/28 19:22:16 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,49 +66,62 @@ t_page	*new_page(t_page *page, size_t s)
 	}
 */
 
+t_mdata	*find_space(t_page *p, size_t s)
+{
+	t_mdata *last;
+	t_mdata *d;
+	size_t reserved;
+
+	if (!p)
+		return (NULL);
+	reserved = 0;
+	last = NULL;
+	d = (void*)&p->tag[DATA];
+	while (d)
+	{
+		reserved += (d->size + MDATA_S);
+		if (d->tag[STATE] == EMPTY)
+		{
+			if (d->size == s)
+			{
+				d->tag[STATE] = FULL;
+				return (d);
+			}
+			if (d->size > (s + MDATA_S + DATA_MIN))
+				return (split_block(d, s));
+//			if (((p->size - reserved) + d->size) >= s)
+		}
+		last = d;
+		d = d->next;
+	}
+	if (p->size >= (reserved + MDATA_S + s))
+	{
+		d = (void*)((char*)&last->tag[DATA] + last->size);
+		d->size = s;
+		d->tag[STATE] = FULL;
+		last->next = d;
+		d->next = NULL;
+		if (p->size == (reserved + MDATA_S + s))
+			p->tag[STATE] = FULL;
+		ft_strncpy(&d->tag[2], g_enddata, 6);//provisoire
+	}
+	return (d);
+}
+
 t_mdata	*split_block(t_mdata *d, size_t s)
 {
 	t_mdata *new;
 
-	// New positioner en memoire juste derriere d
+	ft_putendlcol(RED, "HERE");
 	new = (void*)((char*)&d->tag[DATA] + s);
-	// Insertion de new dans la liste
+	new->size = (d->size - (MDATA_S +  s));
+	new->tag[STATE] = EMPTY;
 	new->next = d->next;
 	d->next = new;
-	new->size = (d->size - (MDATA_S +  s));
 	d->size = s;
-	return (new);
-}
-
-t_mdata	*find_space(t_page *p, size_t s)
-{
-	t_mdata *tmp;
-	t_mdata	*last;
-	size_t	reserved;
-
-	reserved = 0;
-	if (!p)
-		return (NULL);
-	last = NULL;
-	tmp = (void*)&p->tag[DATA];
-	while (tmp->next)
-	{
-		reserved += (tmp->size + MDATA_S);
-		tmp = tmp->next;
-	}
-	reserved += (tmp->size + MDATA_S);
-	if (p->size >= (reserved + MDATA_S + s))
-	{
-		last = (void*)((char*)&tmp->tag[DATA] + tmp->size);
-		last->size = s;
-//		last->next = NULL;	// Necessaire ?
-		last->tag[STATE] = FULL;
-		if (p->size == (reserved + MDATA_S + s))
-			p->tag[STATE] = FULL;
-		tmp->next = last;
-		ft_strncpy(&last->tag[2], g_enddata, 6);//provisoire
-	}
-	return (last);
+	d->tag[STATE] = FULL;
+	ft_strncpy(&new->tag[2], g_enddata, 6);//provisoire
+	return (d);
 }
 
 t_mdata	*get_free_mem(t_page *p, size_t s)

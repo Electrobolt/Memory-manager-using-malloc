@@ -6,7 +6,7 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/27 18:19:01 by banthony          #+#    #+#             */
-/*   Updated: 2017/09/27 18:20:09 by banthony         ###   ########.fr       */
+/*   Updated: 2017/09/28 18:22:56 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,3 +41,13 @@ size_t		get_nb_block(t_page *p, char state)
 	}
 	return (n);
 }
+
+
+
+
+
+
+
+
+
+

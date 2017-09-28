@@ -6,7 +6,7 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/10 15:19:51 by banthony          #+#    #+#             */
-/*   Updated: 2017/09/27 20:15:06 by banthony         ###   ########.fr       */
+/*   Updated: 2017/09/28 19:01:39 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,10 @@ int main(void)
 		ft_strncpy(&str3[i], "3", 1);
 		i++;
 	}
-	my_free(str2);
 	str4 = (char*)my_malloc(sizeof(char) * 40);
 	str5 = (char*)my_malloc(sizeof(char) * 40);
 	str6 = (char*)my_malloc(sizeof(char) * 40);
 	str7 = (char*)my_malloc(sizeof(char) * 40);
-	str8 = (char*)my_malloc(sizeof(char) * 200);
-	str9 = (char*)my_malloc(sizeof(char) * 600);
 	i = 0;
 	while (i < 40)
 	{
@@ -50,23 +47,31 @@ int main(void)
 		ft_strncpy(&str7[i], "7", 1);
 		i++;
 	}
+	my_free(str5);
+	my_free(str6);
+	my_free(str7);
+	str7 = (char*)my_malloc(sizeof(char) * 55);
+	str8 = (char*)my_malloc(sizeof(char) * 89);
+	str9 = (char*)my_malloc(sizeof(char) * 200);
 	i = 0;
-	while (i < 600)
+	while (i < 200)
 	{
-		if (i < 200)
+		if (i < 89)
 			ft_strncpy(&str8[i], "8", 1);
+		if (i < 55)
+			ft_strncpy(&str7[i], "7", 1);
 		ft_strncpy(&str9[i], "9", 1);
 		i++;
-	}
+		}
 //	my_free(str1);
 //	my_free(str6);
 //	my_free(str4);
 //	my_free(str3);
 //	my_free(str5);
 //	my_free(str2);
-	my_free(str7);
+//	my_free(str7);
 //	my_free(str8);
-	my_free(str9);
+//	my_free(str9);
 	show_alloc_mem_ex();
 }
 
