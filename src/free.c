@@ -6,7 +6,7 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/26 16:17:08 by banthony          #+#    #+#             */
-/*   Updated: 2017/09/28 17:38:36 by banthony         ###   ########.fr       */
+/*   Updated: 2017/09/28 21:41:14 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,12 @@ static void	free_page(t_page *p)
 
 void		defrag_mem(t_page *p)
 {
+	size_t	reserved;
+	t_mdata	*last;
 	t_mdata	*d;
 
+	reserved = 0;
+	last = NULL;
 	d = (void*)&p->tag[DATA];
 	while (d)
 	{
@@ -54,8 +58,12 @@ void		defrag_mem(t_page *p)
 			ft_memset(&d->tag[DATA], 0, d->size);
 			continue ;
 		}
+		last = d;
+		reserved += (d->size + MDATA_S);
 		d = d->next;
 	}
+	if (p->size > reserved)
+		last->size += (p->size - reserved);
 	free_page(p);
 }
 

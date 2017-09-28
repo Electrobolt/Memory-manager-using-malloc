@@ -6,7 +6,7 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 15:09:11 by banthony          #+#    #+#             */
-/*   Updated: 2017/09/28 19:22:16 by banthony         ###   ########.fr       */
+/*   Updated: 2017/09/28 22:27:15 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,25 +46,23 @@ t_page	*new_page(t_page *page, size_t s)
 	return (b);
 }
 
-/*
-  	Parcourir mdata
+static t_mdata	*fill_block(t_page *p, t_mdata *d)
+{
+	t_mdata	*tmp;
+	size_t	reserved;
+
+	reserved = 0;
+	tmp = (void*)&p->tag[DATA];
+	while (tmp)
 	{
-		Si mdata empty
-			if (mdata->s < s + MDATA_S) //Block trop petit
-				continue ;
-			if (mdata->s >= s + MDATA_S) //Block assez grand ou egal au besoin
-			{
-				if (mdata->s > (s + (MDATA_S + DATA_MIN))) // (s + 24 + 4) = (s + 28)
-					split_block(mdata, s);
-					split mdata->tag[DATA] + s;
-					creer un new bloc avec le restant; //(new->s sera egale a DATA_MIN au minimum)
-					return le bloc pour l'utilisateur (s)
-				else
-					(mdata->s est inf a s + 28)
-					Utilisation du block existant sans faire de split;
-			}
+		reserved += tmp->size + MDATA_S;
+		tmp = tmp->next;
 	}
-*/
+	if (p->size == reserved)
+		p->tag[STATE] = FULL;
+	d->tag[STATE] = FULL;
+	return (d);
+}
 
 t_mdata	*find_space(t_page *p, size_t s)
 {
@@ -82,14 +80,10 @@ t_mdata	*find_space(t_page *p, size_t s)
 		reserved += (d->size + MDATA_S);
 		if (d->tag[STATE] == EMPTY)
 		{
-			if (d->size == s)
-			{
-				d->tag[STATE] = FULL;
-				return (d);
-			}
 			if (d->size > (s + MDATA_S + DATA_MIN))
 				return (split_block(d, s));
-//			if (((p->size - reserved) + d->size) >= s)
+			if (d->size == s || d->size >= (s + DATA_MIN))
+				return (fill_block(p, d));
 		}
 		last = d;
 		d = d->next;
