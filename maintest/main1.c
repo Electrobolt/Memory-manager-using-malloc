@@ -6,7 +6,7 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/10 15:19:51 by banthony          #+#    #+#             */
-/*   Updated: 2017/09/29 14:15:08 by banthony         ###   ########.fr       */
+/*   Updated: 2017/09/29 14:26:48 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ int main(void)
 	my_free(str8);
 	ft_putendlcol(CYAN, "FREE 8");
 	show_alloc_mem_ex();
-	str7 = (char*)my_realloc_opt(str7, sizeof(char) * 198);
+	str7 = (char*)my_realloc(str7, sizeof(char) * 198);
 	i = 0;
 	while (i < 198)
 		ft_strncpy(&str7[i++], "$", 1);

@@ -6,7 +6,7 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 15:09:11 by banthony          #+#    #+#             */
-/*   Updated: 2017/09/29 12:22:29 by banthony         ###   ########.fr       */
+/*   Updated: 2017/09/29 14:49:23 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void *g_mem = NULL;
 char g_endpage[6] = "PAGE->";
 char g_enddata[6] = "DATA->";
 
-t_page	*new_page(t_page *page, size_t s)
+t_page			*new_page(t_page *page, size_t s)
 {
 	t_page	*b;
 	t_mdata	*p;
@@ -31,22 +31,21 @@ t_page	*new_page(t_page *page, size_t s)
 	b->tag[STATE] = PARTIAL;
 	if (b->size == s)
 		b->tag[STATE] = FULL;
-	ft_strncpy(&b->tag[2], g_endpage, 6);// provisoire
+	ft_strncpy(&b->tag[2], g_endpage, 6);
 	p = (void*)&b->tag[DATA];
 	p->size = s;
 	p->tag[STATE] = FULL;
-	ft_strncpy(&p->tag[2], g_enddata, 6);//provisoire
-	if (page)
-	{
-		while (page->next)
-			page = page->next;
-		page->next = b;
-		b->prev = page;
-	}
+	ft_strncpy(&p->tag[2], g_enddata, 6);
+	if (!page)
+		return (b);
+	while (page->next)
+		page = page->next;
+	page->next = b;
+	b->prev = page;
 	return (b);
 }
 
-static t_mdata	*fill_block(t_page *p, t_mdata *d)
+static t_mdata	*fill_mdata(t_page *p, t_mdata *d)
 {
 	t_mdata	*tmp;
 	size_t	reserved;
@@ -64,11 +63,28 @@ static t_mdata	*fill_block(t_page *p, t_mdata *d)
 	return (d);
 }
 
-t_mdata	*find_space(t_page *p, size_t s)
+static t_mdata	*add_mdata(t_page *p, t_mdata *last, size_t reserved, size_t s)
 {
-	t_mdata *last;
-	t_mdata *d;
-	size_t reserved;
+	t_mdata	*d;
+
+	if (!p || !last)
+		return (NULL);
+	d = (void*)((char*)&last->tag[DATA] + last->size);
+	d->size = s;
+	d->tag[STATE] = FULL;
+	last->next = d;
+	d->next = NULL;
+	if (p->size == (reserved + MDATA_S + s))
+		p->tag[STATE] = FULL;
+	ft_strncpy(&d->tag[2], g_enddata, 6);
+	return (d);
+}
+
+t_mdata			*find_space(t_page *p, size_t s)
+{
+	t_mdata	*last;
+	t_mdata	*d;
+	size_t	reserved;
 
 	if (!p)
 		return (NULL);
@@ -82,63 +98,18 @@ t_mdata	*find_space(t_page *p, size_t s)
 		{
 			if (d->size > (s + MDATA_S + DATA_MIN))
 				return (split_block(d, s));
-			if (d->size == s || d->size >= (s + DATA_MIN))
-				return (fill_block(p, d));
+			if (d->size >= s)
+				return (fill_mdata(p, d));
 		}
 		last = d;
 		d = d->next;
 	}
 	if (p->size >= (reserved + MDATA_S + s))
-	{
-		d = (void*)((char*)&last->tag[DATA] + last->size);
-		d->size = s;
-		d->tag[STATE] = FULL;
-		last->next = d;
-		d->next = NULL;
-		if (p->size == (reserved + MDATA_S + s))
-			p->tag[STATE] = FULL;
-		ft_strncpy(&d->tag[2], g_enddata, 6);//provisoire
-	}
+		d = add_mdata(p, last, reserved, s);
 	return (d);
 }
 
-t_mdata	*split_block(t_mdata *d, size_t s)
-{
-	t_mdata *new;
-
-	new = (void*)((char*)&d->tag[DATA] + s);
-	new->size = (d->size - (MDATA_S +  s));
-	new->tag[STATE] = EMPTY;
-	new->next = d->next;
-	d->next = new;
-	d->size = s;
-	d->tag[STATE] = FULL;
-	ft_strncpy(&new->tag[2], g_enddata, 6);//provisoire
-	return (d);
-}
-
-t_mdata	*get_free_mem(t_page *p, size_t s)
-{
-	t_mdata	*last;
-	t_page	*page;
-	size_t	lim;
-
-	if (!p)
-		return (NULL);
-	last = NULL;
-	lim = get_limit(s);
-	page = p;
-	while (page)
-	{
-		if (page->size == lim && page->tag[STATE] <= PARTIAL)
-			if ((last = find_space(page, s)))
-				break ;
-		page = page->next;
-	}
-	return (last);
-}
-
-void	*my_malloc(size_t size)
+void			*my_malloc(size_t size)
 {
 	t_page	*p;
 	t_mdata	*tmp;

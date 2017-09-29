@@ -6,18 +6,41 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/26 16:17:08 by banthony          #+#    #+#             */
-/*   Updated: 2017/09/29 14:13:42 by banthony         ###   ########.fr       */
+/*   Updated: 2017/09/29 14:49:59 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
 
-/*  Fusionner les metadata vide
-  Toujours garder le premier bloc mdata (auquel cas data->tag[STATE] == EMPTY)
-  Si Un block est EMPTY, verifier si le block suivant l'est aussi
-  Si oui, fusion des deux,
-  Si une page passe a EMPTY, Relink la Liste en sautant la page
-  Liberer la page avec munmap */
+/*
+**  Fusionner les metadata vide
+**  Toujours garder le premier bloc mdata (auquel cas data->tag[STATE] == EMPTY)
+**  Si Un block est EMPTY, verifier si le block suivant l'est aussi
+**  Si oui, fusion des deux,
+**  Si une page passe a EMPTY, Relink la Liste en sautant la page
+**  Liberer la page avec munmap
+*/
+
+t_mdata		*get_free_mem(t_page *p, size_t s)
+{
+	t_mdata	*last;
+	t_page	*page;
+	size_t	lim;
+
+	if (!p)
+		return (NULL);
+	last = NULL;
+	lim = get_limit(s);
+	page = p;
+	while (page)
+	{
+		if (page->size == lim && page->tag[STATE] <= PARTIAL)
+			if ((last = find_space(page, s)))
+				break ;
+		page = page->next;
+	}
+	return (last);
+}
 
 static void	free_page(t_page *p)
 {
@@ -90,7 +113,7 @@ t_mdata		*find_ptr(void *ptr, t_page **p)
 
 void		my_free(void *ptr)
 {
-	t_page *p;
+	t_page	*p;
 	t_mdata	*d;
 
 	p = NULL;

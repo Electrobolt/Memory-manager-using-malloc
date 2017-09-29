@@ -6,7 +6,7 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 17:41:29 by banthony          #+#    #+#             */
-/*   Updated: 2017/09/29 13:00:17 by banthony         ###   ########.fr       */
+/*   Updated: 2017/09/29 14:50:40 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 # define PAGE_S sizeof(t_page)
 # define DATA_MIN 4
 # define MALLOC_MAX (size_t)get_pagesize()*250
+
 /*
 **	Permet d'aligner la taille, et de toujours
 **	demander un multiple de 4 a mmap.
@@ -103,16 +104,4 @@ size_t				get_nb_block(t_page *p, char state);
 
 void				defrag_mem(t_page *p);
 
-void				*my_realloc_opt(void *ptr, size_t size); //provisoire
-
 #endif
-
-
-
-
-
-
-
-
-
-
