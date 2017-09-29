@@ -6,7 +6,7 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 15:09:11 by banthony          #+#    #+#             */
-/*   Updated: 2017/09/28 22:27:15 by banthony         ###   ########.fr       */
+/*   Updated: 2017/09/29 12:22:29 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,6 @@ t_mdata	*split_block(t_mdata *d, size_t s)
 {
 	t_mdata *new;
 
-	ft_putendlcol(RED, "HERE");
 	new = (void*)((char*)&d->tag[DATA] + s);
 	new->size = (d->size - (MDATA_S +  s));
 	new->tag[STATE] = EMPTY;

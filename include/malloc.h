@@ -6,7 +6,7 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 17:41:29 by banthony          #+#    #+#             */
-/*   Updated: 2017/09/27 20:53:20 by banthony         ###   ########.fr       */
+/*   Updated: 2017/09/29 13:00:17 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@
 **	demander un multiple de 4 a mmap.
 */
 
-# define ALIGN(X) (((((X)-1)/4)*4)+4)
+# define ALIGN(SIZE) (((((SIZE)-1)/4)*4)+4)
 
 /*
 **	Tag pour les tailles des zones memoire, & etat de la freelist:
@@ -92,11 +92,27 @@ void				show_alloc_mem(void);
 void				show_alloc_mem_ex(void);
 
 t_page				*new_page(t_page *page, size_t s);
+
 t_mdata				*find_space(t_page *p, size_t s);
 t_mdata				*get_free_mem(t_page *p, size_t s);
 t_mdata				*split_block(t_mdata *d, size_t s);
+t_mdata				*find_ptr(void *ptr, t_page **p);
+
 size_t				get_limit(size_t s);
 size_t				get_nb_block(t_page *p, char state);
+
 void				defrag_mem(t_page *p);
 
+void				*my_realloc_opt(void *ptr, size_t size); //provisoire
+
 #endif
+
+
+
+
+
+
+
+
+
+

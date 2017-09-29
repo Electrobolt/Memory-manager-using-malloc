@@ -6,7 +6,7 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/26 16:17:08 by banthony          #+#    #+#             */
-/*   Updated: 2017/09/28 21:41:14 by banthony         ###   ########.fr       */
+/*   Updated: 2017/09/29 14:13:42 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,37 +67,37 @@ void		defrag_mem(t_page *p)
 	free_page(p);
 }
 
-void		my_free(void *ptr)
+t_mdata		*find_ptr(void *ptr, t_page **p)
 {
-	t_page	*p;
 	t_mdata	*d;
 
-	if (!ptr || !(p = g_mem))
-		return ;
-	while (p)
+	if (!ptr || !p || !(*p = g_mem))
+		return (NULL);
+	d = NULL;
+	while (*p)
 	{
-		d = (void*)&p->tag[DATA];
+		d = (void*)&(*p)->tag[DATA];
 		while (d)
 		{
 			if (&d->tag[DATA] == ptr)
-			{
-				d->tag[STATE] = EMPTY;
-				p->tag[STATE] = PARTIAL;
-				ft_memset(&d->tag[DATA], 0, d->size);
-				defrag_mem(p);
-				return ;
-			}
+				return (d);
 			d = d->next;
 		}
-		p = p->next;
+		*p = (*p)->next;
 	}
+	return (NULL);
 }
 
+void		my_free(void *ptr)
+{
+	t_page *p;
+	t_mdata	*d;
 
-
-
-
-
-
-
-
+	p = NULL;
+	if (!(d = find_ptr(ptr, &p)) || !p)
+		return ;
+	d->tag[STATE] = EMPTY;
+	p->tag[STATE] = PARTIAL;
+	ft_memset(&d->tag[DATA], 0, d->size);
+	defrag_mem(p);
+}

@@ -10,5 +10,9 @@ Un malloc(1025) donne une  zone reserve a 1028, 1025 pour l'utilisateur, 3 resta
 Doit on considerer la page FULL ou PARTIAL ?
 
 
+A faire:
 Garder toujours au moins une page, dans la page liste.
 Pour eviter trop de mmap, si l'utilisateur free;malloc;free;malloc;...
+
+Pour realloc il suffit de verifier uniquement le block suivant *ptr
+Une fusion avec un block precedent n'est pas possible car l'adresse dans *ptr de doit pas changer
