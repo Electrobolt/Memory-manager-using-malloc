@@ -6,7 +6,7 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/27 18:19:01 by banthony          #+#    #+#             */
-/*   Updated: 2017/09/29 14:22:18 by banthony         ###   ########.fr       */
+/*   Updated: 2017/10/02 18:40:35 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,21 @@ size_t			get_nb_block(t_page *p, char state)
 {
 	t_mdata	*d;
 	size_t	n;
+	size_t	size;
 
 	n = 0;
+	size = 0;
 	d = (void*)&p->tag[DATA];
 	while (d)
 	{
 		if (d->tag[STATE] == state || state == BLOCK)
 			n++;
+		if (state == SIZE)
+			size += d->size;
 		d = d->next;
 	}
+	if (state == SIZE)
+		return (size);
 	return (n);
 }
 

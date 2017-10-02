@@ -6,7 +6,7 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/10 15:19:51 by banthony          #+#    #+#             */
-/*   Updated: 2017/09/29 14:26:48 by banthony         ###   ########.fr       */
+/*   Updated: 2017/10/02 18:37:50 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int main(void)
 	}
 	ft_putendlcol(CYAN, "MALLOC 1 2 3 done");
 	//show_alloc_mem_ex();
-	str4 = (char*)my_malloc(sizeof(char) * 40);
+	str4 = (char*)my_malloc(sizeof(char) * 2048);
 	str5 = (char*)my_malloc(sizeof(char) * 40);
 	str6 = (char*)my_malloc(sizeof(char) * 40);
 	str7 = (char*)my_malloc(sizeof(char) * 40);
@@ -53,10 +53,10 @@ int main(void)
 	}
 	ft_putendlcol(CYAN, "MALLOC 4 5 6 7 8 done");
 	//show_alloc_mem_ex();
-	my_free(str5);
+//	my_free(str5);
 	ft_putendlcol(CYAN, "FREE 5");
 	//show_alloc_mem_ex();
-	my_free(str6);
+//	my_free(str6);
 	ft_putendlcol(CYAN, "FREE 6");
 	//show_alloc_mem_ex();
 	my_free(str7);
@@ -71,16 +71,16 @@ int main(void)
 	str8 = (char*)my_malloc(sizeof(char) * 140);
 	ft_putendlcol(CYAN, "MALLOC 8");
 	//show_alloc_mem_ex();
-	my_free(str1);
+//	my_free(str1);
 	ft_putendlcol(CYAN, "FREE 1");
 	//show_alloc_mem_ex();
-	my_free(str2);
+//	my_free(str2);
 	ft_putendlcol(CYAN, "FREE 2");
 	//show_alloc_mem_ex();
-	my_free(str3);
+//	my_free(str3);
 	ft_putendlcol(CYAN, "FREE 3");
 	//show_alloc_mem_ex();
-	my_free(str4);
+//	my_free(str4);
 	ft_putendlcol(CYAN, "FREE 4");
 	//show_alloc_mem_ex();
 	str9 = (char*)my_malloc(sizeof(char) * 200);
@@ -104,20 +104,21 @@ int main(void)
 //	my_free(str7);
 //	my_free(str8);
 //	my_free(str9);
-	str1 = (char*)my_malloc(sizeof(char) * 4);
+/*	str1 = (char*)my_malloc(sizeof(char) * 4);
 	i = 0;
 	while (i < 8)
-		ft_strncpy(&str1[i++], "1", 1);
-	show_alloc_mem_ex();
-	my_free(str8);
-	ft_putendlcol(CYAN, "FREE 8");
-	show_alloc_mem_ex();
+	ft_strncpy(&str1[i++], "1", 1);*/
+//	show_alloc_mem_ex();
+//	my_free(str8);
+//	ft_putendlcol(CYAN, "FREE 8");
+//	show_alloc_mem_ex();
 	str7 = (char*)my_realloc(str7, sizeof(char) * 198);
 	i = 0;
 	while (i < 198)
 		ft_strncpy(&str7[i++], "$", 1);
 	ft_putendlcol(CYAN, "REALLOC 7");
 	show_alloc_mem_ex();
+	show_alloc_mem();
 }
 
 

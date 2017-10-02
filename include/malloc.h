@@ -6,7 +6,7 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 17:41:29 by banthony          #+#    #+#             */
-/*   Updated: 2017/09/29 14:50:40 by banthony         ###   ########.fr       */
+/*   Updated: 2017/10/02 18:56:16 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ typedef enum		e_tag
 	TINY, SMALL, LARGE,
 	EMPTY, PARTIAL, FULL,
 	DATA,
-	BLOCK,
+	BLOCK, SIZE,
 }					t_tag;
 
 /*
@@ -100,8 +100,24 @@ t_mdata				*split_block(t_mdata *d, size_t s);
 t_mdata				*find_ptr(void *ptr, t_page **p);
 
 size_t				get_limit(size_t s);
+char				get_malloc_type(size_t s);
 size_t				get_nb_block(t_page *p, char state);
 
 void				defrag_mem(t_page *p);
 
 #endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -6,7 +6,7 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 15:09:11 by banthony          #+#    #+#             */
-/*   Updated: 2017/09/29 14:49:23 by banthony         ###   ########.fr       */
+/*   Updated: 2017/10/02 18:54:45 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ t_page			*new_page(t_page *page, size_t s)
 	ft_memset(b, 0, PAGE_S + n);
 	b->size = n;
 	b->tag[STATE] = PARTIAL;
+	b->tag[TYPE] = get_malloc_type(n);
 	if (b->size == s)
 		b->tag[STATE] = FULL;
 	ft_strncpy(&b->tag[2], g_endpage, 6);
