@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   show_alloc.c                                       :+:      :+:    :+:   */
+/*   show_alloc_mem_ex.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/09/26 16:01:38 by banthony          #+#    #+#             */
-/*   Updated: 2017/10/02 19:19:42 by banthony         ###   ########.fr       */
+/*   Created: 2017/10/03 13:09:39 by banthony          #+#    #+#             */
+/*   Updated: 2017/10/03 13:09:43 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char		get_malloc_type(size_t s)
 	return (LARGE);
 }
 
-static void	show_malloc_type(char type)
+void		show_malloc_type(char type)
 {
 	if (type == TINY)
 		ft_putstrcol(GREEN, "TINY");
@@ -88,69 +88,3 @@ void		show_alloc_mem_ex(void)
 		p = p->next;
 	}
 }
-
-static void	page_type(t_page *p, char type)
-{
-	show_malloc_type(type);
-	ft_print_ptr(&p->tag[DATA]);
-	ft_putchar('\n');
-}
-
-static void alloc_of_type(t_page *p, char type, size_t *total)
-{
-	size_t s;
-
-	s = 0;
-	while (p)
-	{
-		if (p->tag[TYPE] == type)
-		{
-			s = get_nb_block(p, SIZE);
-			ft_print_ptr((void*)&p->tag[DATA]);
-			ft_putstr(" - ");
-			ft_print_ptr((void*)(char*)(&p->tag[DATA] + s));
-			ft_putstr(" : ");
-			ft_putnbr((long long)s);
-			ft_putendl(" octets");
-			*total = *total + s;
-		}
-		p = p->next;
-	}
-}
-
-void	show_alloc_mem(void)
-{
-	char	type;
-	size_t	total;
-	size_t	s;
-	t_page	*p;
-
-	if (!g_mem || !(p = (t_page*)g_mem))
-	{
-		ft_putendl("Empty Memory");
-		return ;
-	}
-	total = 0;
-	type = TINY - 1;
-	while (++type <= LARGE)
-	{
-		p = (t_page*)g_mem;
-//		test si type present dans les pages, si oui afficher page_type
-//		affichage detail des pages si type present
-	}
-	ft_putstr("Total : ");
-	ft_putnbr((long long)total);
-	ft_putstr(" octets\n");
-}
-
-
-
-
-
-
-
-
-
-
-
-

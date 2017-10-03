@@ -6,7 +6,7 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/26 16:17:08 by banthony          #+#    #+#             */
-/*   Updated: 2017/09/29 14:49:59 by banthony         ###   ########.fr       */
+/*   Updated: 2017/10/03 14:49:21 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ t_mdata		*find_ptr(void *ptr, t_page **p)
 	return (NULL);
 }
 
-void		my_free(void *ptr)
+void		free(void *ptr)
 {
 	t_page	*p;
 	t_mdata	*d;

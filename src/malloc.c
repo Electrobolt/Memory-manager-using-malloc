@@ -6,15 +6,13 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 15:09:11 by banthony          #+#    #+#             */
-/*   Updated: 2017/10/02 18:54:45 by banthony         ###   ########.fr       */
+/*   Updated: 2017/10/03 14:49:33 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
 
 void *g_mem = NULL;
-char g_endpage[6] = "PAGE->";
-char g_enddata[6] = "DATA->";
 
 t_page			*new_page(t_page *page, size_t s)
 {
@@ -32,11 +30,11 @@ t_page			*new_page(t_page *page, size_t s)
 	b->tag[TYPE] = get_malloc_type(n);
 	if (b->size == s)
 		b->tag[STATE] = FULL;
-	ft_strncpy(&b->tag[2], g_endpage, 6);
+	ft_strncpy(&b->tag[2], END_PAGE, 6);
 	p = (void*)&b->tag[DATA];
 	p->size = s;
 	p->tag[STATE] = FULL;
-	ft_strncpy(&p->tag[2], g_enddata, 6);
+	ft_strncpy(&p->tag[2], END_DATA, 6);
 	if (!page)
 		return (b);
 	while (page->next)
@@ -77,7 +75,7 @@ static t_mdata	*add_mdata(t_page *p, t_mdata *last, size_t reserved, size_t s)
 	d->next = NULL;
 	if (p->size == (reserved + MDATA_S + s))
 		p->tag[STATE] = FULL;
-	ft_strncpy(&d->tag[2], g_enddata, 6);
+	ft_strncpy(&d->tag[2], END_DATA, 6);
 	return (d);
 }
 
@@ -110,7 +108,7 @@ t_mdata			*find_space(t_page *p, size_t s)
 	return (d);
 }
 
-void			*my_malloc(size_t size)
+void			*malloc(size_t size)
 {
 	t_page	*p;
 	t_mdata	*tmp;

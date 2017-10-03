@@ -6,7 +6,7 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/27 18:19:01 by banthony          #+#    #+#             */
-/*   Updated: 2017/10/02 18:40:35 by banthony         ###   ########.fr       */
+/*   Updated: 2017/10/03 14:50:15 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,11 +80,11 @@ t_mdata			*split_block(t_mdata *d, size_t s)
 	d->next = new;
 	d->size = s;
 	d->tag[STATE] = FULL;
-	ft_strncpy(&new->tag[2], g_enddata, 6);
+	ft_strncpy(&new->tag[2], END_DATA, 6);
 	return (d);
 }
 
-void			*my_realloc(void *ptr, size_t size)
+void			*realloc(void *ptr, size_t size)
 {
 	t_page	*p;
 	t_mdata	*d;
@@ -93,20 +93,20 @@ void			*my_realloc(void *ptr, size_t size)
 
 	p = NULL;
 	if (!ptr)
-		return (my_malloc(size));
+		return (malloc(size));
 	if (!(d = find_ptr(ptr, &p)) || !p)
 		return (NULL);
 	if (!size)
 	{
-		my_free(ptr);
-		return (my_malloc(DATA_MIN));
+		free(ptr);
+		return (malloc(DATA_MIN));
 	}
 	if (!(fusion = fusion_mdata(d, ALIGN(size))))
 	{
-		if (!(new = my_malloc(size)))
+		if (!(new = malloc(size)))
 			return (ptr);
 		ft_memcpy(new, ptr, d->size);
-		my_free(ptr);
+		free(ptr);
 		return (new);
 	}
 	return ((void*)&fusion->tag[DATA]);

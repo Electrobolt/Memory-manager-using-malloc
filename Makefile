@@ -6,7 +6,7 @@
 #    By: banthony <banthony@students.42.fr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/11/23 16:22:07 by banthony          #+#    #+#              #
-#    Updated: 2017/09/29 14:59:17 by banthony         ###   ########.fr        #
+#    Updated: 2017/10/03 14:45:57 by banthony         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -22,13 +22,15 @@ PATH_SRC = ./src/
 
 PATH_TEST = ./maintest/
 
-PATH_LIBFT = ~/libft/
-
 PATH_HEAD = ./include/
 
 HEADER_FILE = malloc.h	\
 
-SRC_FILE = 	malloc.c	realloc.c	show_alloc.c	free.c	\
+SRC_FILE = 	malloc.c			realloc.c			show_alloc_mem_ex.c	free.c			\
+			show_alloc_mem.c	ft_memset.c			ft_strncpy.c		ft_memcpy.c		\
+			ft_putchar.c		ft_strlen.c			ft_putnbrendl.c		ft_putstr.c		\
+			ft_putstrcol.c		ft_putchar_base.c	ft_print_memory.c	ft_print_ptr.c	\
+			ft_putendl.c		ft_putnbr.c			\
 
 MAIN_FILE =	main1.c	\
 
@@ -46,39 +48,30 @@ OBJ2 = $(OBJ:%.o=$(PATH_SRC)%.o)
 
 MAIN_O2 = $(MAIN_O:%.o=$(PATH_TEST)%.o)
 
-HEAD_DIR = -I ./include -I $(PATH_LIBFT)
+HEAD_DIR = -I ./include
 
-LIB = -L $(PATH_LIBFT)  -lft
-
-FLAGS = -Wall -Wextra -Werror -g3 -Weverything -fsanitize=address
+FLAGS = -Wall -Wextra -Werror -g3 -Weverything
 
 all: $(NAME2)
 
 $(NAME2): $(SRC) $(INCLUDE)
-	make -C $(PATH_LIBFT) debug
 	gcc $(FLAGS) $(HEAD_DIR) -c $(SRC)
 	mv $(OBJ) $(PATH_SRC)
-	gcc -o $(NAME1) -shared $(OBJ2) $(HEAD_DIR) $(LIB) $(FLAGS)
+	gcc -o $(NAME1) -shared $(OBJ2) $(HEAD_DIR) $(FLAGS)
 	ln -s $(NAME1) $(NAME2)
 
-test: $(NAME2) $(SRC)
-	gcc $(FLAGS) $(NAME2) $(HEAD_DIR) $(LIB) ./src/main.c
-
 real: $(SRC) $(INCLUDE)
-	make -C $(PATH_LIBFT) debug
 	gcc $(FLAGS) $(HEAD_DIR) -c $(SRC) $(MAIN)
 	mv $(OBJ) $(PATH_SRC)
 	mv $(MAIN_O) $(PATH_TEST)
-	gcc -o real_malloc $(OBJ2) $(MAIN_O2) $(HEAD_DIR) $(LIB) $(FLAGS)
+	gcc -o real_malloc $(OBJ2) $(MAIN_O2) $(HEAD_DIR) $(FLAGS)
 
 clean:
-	make clean -C $(PATH_LIBFT)
 	rm -f $(OBJ2)
 	rm -f $(MAIN_O2)
 	rm -rf ./a.out a.out.dSYM ./real_malloc ./real_malloc.dSYM
 
 fclean: clean
 	rm -f $(NAME2) $(NAME1)
-	make fclean -C $(PATH_LIBFT)
 
 re: fclean all

@@ -16,3 +16,5 @@ Pour eviter trop de mmap, si l'utilisateur free;malloc;free;malloc;...
 
 Pour realloc il suffit de verifier uniquement le block suivant *ptr
 Une fusion avec un block precedent n'est pas possible car l'adresse dans *ptr de doit pas changer
+
+Attention a sanitize sur libft
