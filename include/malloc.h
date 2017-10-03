@@ -6,7 +6,7 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 17:41:29 by banthony          #+#    #+#             */
-/*   Updated: 2017/10/03 20:24:37 by banthony         ###   ########.fr       */
+/*   Updated: 2017/10/03 22:42:32 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@
 
 # define MDATA_S sizeof(t_mdata)
 # define PAGE_S sizeof(t_page)
-# define TINY_LIMIT (size_t)(PS * 16)
-# define SMALL_LIMIT (size_t)(PS * 250)
+# define TINY_LIMIT 128//(size_t)(PS * 16)
+# define SMALL_LIMIT 1024//(size_t)(PS * 250)
 # define N ALIGN_PSIZE(PAGE_S + ((MDATA_S + TINY_LIMIT) * 100))
 # define M ALIGN_PSIZE(PAGE_S + ((MDATA_S + SMALL_LIMIT) * 100))
 # define DATA_MIN 4

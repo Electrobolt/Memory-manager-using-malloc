@@ -6,7 +6,7 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 15:09:11 by banthony          #+#    #+#             */
-/*   Updated: 2017/10/03 20:17:17 by banthony         ###   ########.fr       */
+/*   Updated: 2017/10/03 22:02:30 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,12 @@ t_page			*new_page(t_page *page, size_t s)
 	t_mdata	*d;
 	size_t	n;
 
-	n = get_limit(s);
-	if (!(p = mmap(NULL, (n + PAGE_S),
+	n = get_size_area(get_limit(s));
+	if (!(p = mmap(NULL, n,
 			PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0)))
 		return (NULL);
-	ft_memset(p, 0, PAGE_S + n);
-	p->size = n;
+	ft_memset(p, 0, n);
+	p->size = n - PAGE_S;
 	p->tag[STATE] = PARTIAL;
 	if ((p->tag[TYPE] = get_malloc_tag_type(s)) == LARGE)
 		p->tag[STATE] = FULL;

@@ -6,7 +6,7 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/26 16:17:08 by banthony          #+#    #+#             */
-/*   Updated: 2017/10/03 15:05:59 by banthony         ###   ########.fr       */
+/*   Updated: 2017/10/03 22:38:56 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_mdata		*get_free_mem(t_page *p, size_t s)
 	if (!p)
 		return (NULL);
 	last = NULL;
-	lim = get_limit(s);
+	lim = get_size_area(get_limit(s)) - PAGE_S;
 	page = p;
 	while (page)
 	{
@@ -87,7 +87,8 @@ void		defrag_mem(t_page *p)
 	}
 	if (p->size > reserved)
 		last->size += (p->size - reserved);
-	free_page(p);
+	if (p->next)
+		free_page(p);
 }
 
 t_mdata		*find_ptr(void *ptr, t_page **p)

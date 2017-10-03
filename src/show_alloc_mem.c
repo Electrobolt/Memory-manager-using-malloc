@@ -6,7 +6,7 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/03 13:03:06 by banthony          #+#    #+#             */
-/*   Updated: 2017/10/03 17:14:39 by banthony         ###   ########.fr       */
+/*   Updated: 2017/10/03 22:00:31 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,16 @@ static size_t	display_detail(t_page *p)
 	d = (void*)&p->tag[DATA];
 	while (d)
 	{
-		ft_print_ptr((void*)&d->tag[DATA]);
-		ft_putstr(" - ");
-		ft_print_ptr((void*)(char*)(&d->tag[DATA] + d->size));
-		ft_putstr(" : ");
-		ft_putnbr((long long)d->size);
-		ft_putendl(" octets");
-		s += d->size;
+		if (d->tag[STATE] != EMPTY)
+		{
+			ft_print_ptr((void*)&d->tag[DATA]);
+			ft_putstr(" - ");
+			ft_print_ptr((void*)(char*)(&d->tag[DATA] + d->size));
+			ft_putstr(" : ");
+			ft_putnbr((long long)d->size);
+			ft_putendl(" octets");
+			s += d->size;
+		}
 		d = d->next;
 	}
 	return (s);
