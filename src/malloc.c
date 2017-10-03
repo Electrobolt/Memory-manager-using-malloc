@@ -6,7 +6,7 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 15:09:11 by banthony          #+#    #+#             */
-/*   Updated: 2017/10/03 14:49:33 by banthony         ###   ########.fr       */
+/*   Updated: 2017/10/03 20:17:17 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,34 +14,42 @@
 
 void *g_mem = NULL;
 
+size_t			get_size_area(size_t s)
+{
+	if (s == TINY_LIMIT)
+		return (N);
+	if (s == SMALL_LIMIT)
+		return (M);
+	return (s);
+}
+
 t_page			*new_page(t_page *page, size_t s)
 {
-	t_page	*b;
-	t_mdata	*p;
+	t_page	*p;
+	t_mdata	*d;
 	size_t	n;
 
 	n = get_limit(s);
-	if (!(b = mmap(NULL, (PAGE_S + n),
+	if (!(p = mmap(NULL, (n + PAGE_S),
 			PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0)))
 		return (NULL);
-	ft_memset(b, 0, PAGE_S + n);
-	b->size = n;
-	b->tag[STATE] = PARTIAL;
-	b->tag[TYPE] = get_malloc_type(n);
-	if (b->size == s)
-		b->tag[STATE] = FULL;
-	ft_strncpy(&b->tag[2], END_PAGE, 6);
-	p = (void*)&b->tag[DATA];
-	p->size = s;
-	p->tag[STATE] = FULL;
-	ft_strncpy(&p->tag[2], END_DATA, 6);
+	ft_memset(p, 0, PAGE_S + n);
+	p->size = n;
+	p->tag[STATE] = PARTIAL;
+	if ((p->tag[TYPE] = get_malloc_tag_type(s)) == LARGE)
+		p->tag[STATE] = FULL;
+	ft_strncpy(&p->tag[2], END_PAGE, 6);
+	d = (void*)&p->tag[DATA];
+	d->size = s;
+	d->tag[STATE] = FULL;
+	ft_strncpy(&d->tag[2], END_DATA, 6);
 	if (!page)
-		return (b);
+		return (p);
 	while (page->next)
 		page = page->next;
-	page->next = b;
-	b->prev = page;
-	return (b);
+	page->next = p;
+	p->prev = page;
+	return (p);
 }
 
 static t_mdata	*fill_mdata(t_page *p, t_mdata *d)

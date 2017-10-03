@@ -6,13 +6,13 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/03 13:09:39 by banthony          #+#    #+#             */
-/*   Updated: 2017/10/03 13:09:43 by banthony         ###   ########.fr       */
+/*   Updated: 2017/10/03 18:52:13 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
 
-char		get_malloc_type(size_t s)
+char		get_malloc_tag_type(size_t s)
 {
 	if (s <= TINY_LIMIT)
 		return (TINY);

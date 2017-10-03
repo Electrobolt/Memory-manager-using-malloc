@@ -6,7 +6,7 @@
 #    By: banthony <banthony@students.42.fr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/11/23 16:22:07 by banthony          #+#    #+#              #
-#    Updated: 2017/10/03 14:45:57 by banthony         ###   ########.fr        #
+#    Updated: 2017/10/03 15:25:20 by banthony         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -32,7 +32,7 @@ SRC_FILE = 	malloc.c			realloc.c			show_alloc_mem_ex.c	free.c			\
 			ft_putstrcol.c		ft_putchar_base.c	ft_print_memory.c	ft_print_ptr.c	\
 			ft_putendl.c		ft_putnbr.c			\
 
-MAIN_FILE =	main1.c	\
+MAIN_FILE =	test5.c	\
 
 SRC = $(SRC_FILE:%c=$(PATH_SRC)%c)
 
@@ -59,12 +59,6 @@ $(NAME2): $(SRC) $(INCLUDE)
 	mv $(OBJ) $(PATH_SRC)
 	gcc -o $(NAME1) -shared $(OBJ2) $(HEAD_DIR) $(FLAGS)
 	ln -s $(NAME1) $(NAME2)
-
-real: $(SRC) $(INCLUDE)
-	gcc $(FLAGS) $(HEAD_DIR) -c $(SRC) $(MAIN)
-	mv $(OBJ) $(PATH_SRC)
-	mv $(MAIN_O) $(PATH_TEST)
-	gcc -o real_malloc $(OBJ2) $(MAIN_O2) $(HEAD_DIR) $(FLAGS)
 
 clean:
 	rm -f $(OBJ2)

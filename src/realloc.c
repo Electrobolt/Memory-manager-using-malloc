@@ -6,7 +6,7 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/27 18:19:01 by banthony          #+#    #+#             */
-/*   Updated: 2017/10/03 14:50:15 by banthony         ###   ########.fr       */
+/*   Updated: 2017/10/03 19:08:22 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,11 @@
 
 size_t			get_limit(size_t s)
 {
-	size_t n;
-
-	n = 0;
 	if (s <= TINY_LIMIT)
-		n = TINY_LIMIT;
+		return (TINY_LIMIT);
 	if (s <= SMALL_LIMIT && s > TINY_LIMIT)
-		n = SMALL_LIMIT;
-	if (s > SMALL_LIMIT)
-		n = s;
-	return (n);
+		return (SMALL_LIMIT);
+	return (s);	//LARGE
 }
 
 size_t			get_nb_block(t_page *p, char state)

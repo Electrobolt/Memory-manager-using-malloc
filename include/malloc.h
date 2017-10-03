@@ -6,7 +6,7 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 17:41:29 by banthony          #+#    #+#             */
-/*   Updated: 2017/10/03 14:54:18 by banthony         ###   ########.fr       */
+/*   Updated: 2017/10/03 20:24:37 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,29 +27,31 @@
 # define GREY "\033[37m"
 
 /*
-**	N = 1/16 choisi arbitrairement par rapport a M
-**	M = 1/8 de getpagesize() (Doc sur Slab Allocation)
-**	DATA_MIN = Valeur min d'une allocation ou d'un mdata->size
-**	MALLOC_MAX = 4096 (4kbytes) * 250 = 1024kbytes
-*/
-
-# define TINY_LIMIT (size_t)getpagesize() / 4
-# define SMALL_LIMIT (size_t)getpagesize()
-# define MDATA_S sizeof(t_mdata)
-# define PAGE_S sizeof(t_page)
-# define DATA_MIN 4
-//# define MALLOC_MAX (size_t)get_pagesize()*250
-# define END_PAGE "PAGE->"
-# define END_DATA "DATA->"
-
-/*
 **	Permet d'aligner la taille, et de toujours
 **	demander un multiple de 4 a mmap.
 */
 
+# define PS (size_t)getpagesize()
 # define ALIGN(SIZE) (((((SIZE)-1)/4)*4)+4)
+# define ALIGN_PSIZE(SIZE) (((((SIZE)-1)/PS)*PS)+PS)
 
 /*
+**	N = 1/16 choisi arbitrairement par rapport a M
+**	M = 1/8 de getpagesize() (Doc sur Slab Allocation)
+**	DATA_MIN = Valeur min d'une allocation ou d'un mdata->size
+*/
+
+# define MDATA_S sizeof(t_mdata)
+# define PAGE_S sizeof(t_page)
+# define TINY_LIMIT (size_t)(PS * 16)
+# define SMALL_LIMIT (size_t)(PS * 250)
+# define N ALIGN_PSIZE(PAGE_S + ((MDATA_S + TINY_LIMIT) * 100))
+# define M ALIGN_PSIZE(PAGE_S + ((MDATA_S + SMALL_LIMIT) * 100))
+# define DATA_MIN 4
+# define END_PAGE "PAGE->"
+# define END_DATA "DATA->"
+
+/*		INFO PERIME
 **	Tag pour les tailles des zones memoire, & etat des mdata:
 **	TINY	= [1 ; N]
 **	SMALL	= [(N + 1) ; M]
@@ -119,10 +121,11 @@ t_mdata				*get_free_mem(t_page *p, size_t s);
 t_mdata				*split_block(t_mdata *d, size_t s);
 t_mdata				*find_ptr(void *ptr, t_page **p);
 size_t				get_limit(size_t s);
-char				get_malloc_type(size_t s);
+char				get_malloc_tag_type(size_t s);
 size_t				get_nb_block(t_page *p, char state);
 void				show_malloc_type(char type);
 void				defrag_mem(t_page *p);
+size_t				get_size_area(size_t s);
 
 void				ft_putchar(char const c);
 size_t				ft_strlen(const char *s);
