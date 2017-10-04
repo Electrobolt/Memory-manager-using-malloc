@@ -6,7 +6,7 @@
 #    By: banthony <banthony@students.42.fr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/11/23 16:22:07 by banthony          #+#    #+#              #
-#    Updated: 2017/10/04 17:57:38 by banthony         ###   ########.fr        #
+#    Updated: 2017/10/04 19:22:49 by banthony         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -26,11 +26,11 @@ PATH_HEAD = ./include/
 
 HEADER_FILE = malloc.h	\
 
-SRC_FILE = 	malloc.c			realloc.c			show_alloc_mem_ex.c	free.c			\
-			show_alloc_mem.c	ft_memset.c			ft_strncpy.c		ft_memcpy.c		\
+SRC_FILE = 	malloc.c			realloc.c			show_alloc_mem.c	free.c			\
+			get_info_mem.c		ft_memset.c			ft_strncpy.c		ft_memcpy.c		\
 			ft_putchar.c		ft_strlen.c			ft_putnbrendl.c		ft_putstr.c		\
 			ft_putstrcol.c		ft_putchar_base.c	ft_print_memory.c	ft_print_ptr.c	\
-			ft_putendl.c		ft_putnbr.c			\
+			ft_putendl.c		ft_putnbr.c												\
 
 MAIN_FILE =	test5.c	\
 

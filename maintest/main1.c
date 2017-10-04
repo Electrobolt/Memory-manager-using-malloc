@@ -6,7 +6,7 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/10 15:19:51 by banthony          #+#    #+#             */
-/*   Updated: 2017/10/03 21:57:44 by banthony         ###   ########.fr       */
+/*   Updated: 2017/10/04 15:14:59 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ int main(void)
 	char *str7, *str8, *str9;
 	int i = 0;
 
-	printf("page:%lu - mdata:%lu\n", sizeof(t_page), sizeof(t_mdata));
 	str1 = (char*)malloc(sizeof(char) * 40);
 	str2 = (char*)malloc(sizeof(char) * 40);
 	str3 = (char*)malloc(sizeof(char) * 40);
@@ -53,7 +52,7 @@ int main(void)
 	free(str8);
 	str7 = (char*)malloc(sizeof(char) * 50);
 	str8 = (char*)malloc(sizeof(char) * 140);
-	str9 = (char*)malloc(sizeof(char) * 200);
+	str9 = (char*)malloc(sizeof(char) * 1025);
 	i = 0;
 	while (i < 200)
 	{
@@ -68,7 +67,14 @@ int main(void)
 	i = 0;
 	while (i < 198)
 		strncpy(&str7[i++], "$", 1);
+	ft_putstr("-------------Show_mem_ex--------------\n");
 	show_alloc_mem_ex();
+	ft_putstr("-------------Show_mem-----------------\n");
+	show_alloc_mem();
+	str9 = (char*)realloc(str9, 0);
+	ft_putstr("-------------Show_mem_ex--------------\n");
+	show_alloc_mem_ex();
+	ft_putstr("-------------Show_mem-----------------\n");
 	show_alloc_mem();
 }
 

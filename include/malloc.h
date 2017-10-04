@@ -6,7 +6,7 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 17:41:29 by banthony          #+#    #+#             */
-/*   Updated: 2017/10/04 18:53:16 by banthony         ###   ########.fr       */
+/*   Updated: 2017/10/04 19:19:16 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,7 @@ size_t				get_nb_block(t_page *p, char state);
 void				show_malloc_type(char type);
 void				defrag_mem(t_page *p);
 size_t				get_size_area(size_t s);
+void				show_dump_hex(void *ptr, size_t size);
 
 void				ft_putchar(char const c);
 size_t				ft_strlen(const char *s);
@@ -142,3 +143,7 @@ void				ft_print_memory(void *addr, size_t size);
 char				*ft_strncpy(char *dst, const char *src, size_t n);
 
 #endif
+
+
+
+

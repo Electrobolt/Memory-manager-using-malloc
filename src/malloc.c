@@ -6,7 +6,7 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 15:09:11 by banthony          #+#    #+#             */
-/*   Updated: 2017/10/04 18:50:26 by banthony         ###   ########.fr       */
+/*   Updated: 2017/10/04 19:20:49 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,6 @@
 #include <stdio.h>
 
 void *g_mem = NULL;
-
-size_t			get_size_area(size_t s)
-{
-	if (s == TINY_LIMIT)
-		return (N);
-	if (s == SMALL_LIMIT)
-		return (M);
-	return (ALIGN_PSIZE(s + PAGE_S));
-}
 
 t_page			*new_page(t_page *page, size_t s)
 {

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/10/03 13:03:06 by banthony          #+#    #+#             */
-/*   Updated: 2017/10/03 22:00:31 by banthony         ###   ########.fr       */
+/*   Created: 2017/10/04 19:22:15 by banthony          #+#    #+#             */
+/*   Updated: 2017/10/04 19:22:16 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void		page_type(t_page *p, char type)
 	ft_putchar('\n');
 }
 
-static size_t	display_detail(t_page *p)
+static size_t	display_detail(t_page *p, size_t is_ex)
 {
 	size_t	s;
 	t_mdata	*d;
@@ -40,6 +40,8 @@ static size_t	display_detail(t_page *p)
 			ft_putstr(" : ");
 			ft_putnbr((long long)d->size);
 			ft_putendl(" octets");
+			if (is_ex)
+				show_dump_hex((void*)&d->tag[DATA], d->size);
 			s += d->size;
 		}
 		d = d->next;
@@ -47,17 +49,17 @@ static size_t	display_detail(t_page *p)
 	return (s);
 }
 
-static void		alloc_of_type(t_page *p, char type, size_t *total)
+static void		alloc_of_type(t_page *p, char type, size_t *total, size_t is_ex)
 {
 	size_t	s;
 
 	s = 0;
 	while (p)
 	{
-		page_type(p, type);
 		if (p->tag[TYPE] == type)
 		{
-			s = display_detail(p);
+			page_type(p, type);
+			s = display_detail(p, is_ex);
 			*total = *total + s;
 		}
 		p = p->next;
@@ -80,7 +82,30 @@ void			show_alloc_mem(void)
 	while (++type <= LARGE)
 	{
 		p = (t_page*)g_mem;
-		alloc_of_type(p, type, &total);
+		alloc_of_type(p, type, &total, 0);
+	}
+	ft_putstr("Total : ");
+	ft_putnbr((long long)total);
+	ft_putstr(" octets\n");
+}
+
+void			show_alloc_mem_ex(void)
+{
+	char	type;
+	size_t	total;
+	t_page	*p;
+
+	if (!g_mem || !(p = (t_page*)g_mem))
+	{
+		ft_putendl("Empty Memory");
+		return ;
+	}
+	total = 0;
+	type = TINY - 1;
+	while (++type <= LARGE)
+	{
+		p = (t_page*)g_mem;
+		alloc_of_type(p, type, &total, 1);
 	}
 	ft_putstr("Total : ");
 	ft_putnbr((long long)total);
