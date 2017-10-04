@@ -6,7 +6,7 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 17:41:29 by banthony          #+#    #+#             */
-/*   Updated: 2017/10/03 22:42:32 by banthony         ###   ########.fr       */
+/*   Updated: 2017/10/04 18:53:16 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@
 
 # define MDATA_S sizeof(t_mdata)
 # define PAGE_S sizeof(t_page)
-# define TINY_LIMIT 128//(size_t)(PS * 16)
-# define SMALL_LIMIT 1024//(size_t)(PS * 250)
+# define TINY_LIMIT 1024
+# define SMALL_LIMIT 8192
 # define N ALIGN_PSIZE(PAGE_S + ((MDATA_S + TINY_LIMIT) * 100))
 # define M ALIGN_PSIZE(PAGE_S + ((MDATA_S + SMALL_LIMIT) * 100))
 # define DATA_MIN 4
@@ -130,7 +130,7 @@ size_t				get_size_area(size_t s);
 void				ft_putchar(char const c);
 size_t				ft_strlen(const char *s);
 void				ft_putnbr(long long nb);
-void				ft_putnbrendl(int nb);
+void				ft_putnbrendl(long long nb);
 void				ft_putstr(char const *s);
 void				ft_putendl(char const *s);
 void				ft_putstrcol(char *color, char *s);
