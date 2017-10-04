@@ -6,13 +6,11 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/21 15:09:11 by banthony          #+#    #+#             */
-/*   Updated: 2017/10/04 19:20:49 by banthony         ###   ########.fr       */
+/*   Updated: 2017/10/04 20:42:28 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
-
-#include <stdio.h>
 
 void *g_mem = NULL;
 
