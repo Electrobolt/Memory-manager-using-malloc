@@ -6,20 +6,11 @@
 /*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/26 16:17:08 by banthony          #+#    #+#             */
-/*   Updated: 2017/10/03 22:38:56 by banthony         ###   ########.fr       */
+/*   Updated: 2017/10/04 20:15:22 by banthony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
-
-/*
-**  Fusionner les metadata vide
-**  Toujours garder le premier bloc mdata (auquel cas data->tag[STATE] == EMPTY)
-**  Si Un block est EMPTY, verifier si le block suivant l'est aussi
-**  Si oui, fusion des deux,
-**  Si une page passe a EMPTY, Relink la Liste en sautant la page
-**  Liberer la page avec munmap
-*/
 
 t_mdata		*get_free_mem(t_page *p, size_t s)
 {
@@ -87,7 +78,7 @@ void		defrag_mem(t_page *p)
 	}
 	if (p->size > reserved)
 		last->size += (p->size - reserved);
-	if (p->next)
+	if (p->next || p->prev)
 		free_page(p);
 }
 
