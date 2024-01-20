@@ -1,14 +1,15 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   show_alloc_mem_ex.c                                :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/10/03 13:09:39 by banthony          #+#    #+#             */
-/*   Updated: 2017/10/03 18:52:13 by banthony         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+/***********************************************************/
+/*                                                         */
+/*                                                         */
+/*    show_alloc_mem_ex.c                                  */
+/*                                                         */
+/*    By: banthony <banthony@students.42.fr>               */
+/*    Recoded by: Electrobolt <pharelledo06@gmail.com>     */
+/*                                                         */
+/*    Created: 2017/10/03 15:36:20 by banthony             */
+/*    Updated: 2023/10/12 12:03:37 by Electrobolt          */
+/*                                                         */
+/***********************************************************/ 
 
 #include "malloc.h"
 
@@ -52,7 +53,7 @@ static void	get_data_detail(t_page *p)
 	size_t	nb;
 	size_t	free;
 
-	tmp = (void*)&p->tag[DATA];
+	tmp = (void* )&p->tag[DATA];
 	nb = get_nb_block(p, BLOCK);
 	free = get_nb_block(p, EMPTY);
 	ft_putstrcol(BLUE, "Total Block: ");
@@ -71,7 +72,7 @@ void		show_alloc_mem_ex(void)
 {
 	t_page *p;
 
-	if (!g_mem || !(p = (t_page*)g_mem))
+	if (!g_mem || !(p = (t_page* )g_mem))
 	{
 		ft_putstrcol(BLUE, "Empty Memory\n");
 		return ;

@@ -1,14 +1,15 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_print_memory.c                                  :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/08/15 14:39:40 by banthony          #+#    #+#             */
-/*   Updated: 2017/10/03 14:33:11 by banthony         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+/***********************************************************/
+/*                                                         */
+/*                                                         */
+/*    ft_print_memory.c                                    */
+/*                                                         */
+/*    By: banthony <banthony@students.42.fr>               */
+/*    Recoded by: Electrobolt <pharelledo06@gmail.com>     */
+/*                                                         */
+/*    Created: 2017/08/15 14:39:40 by banthony             */
+/*    Updated: 2023/11/15 01:37:25 by Electrobolt          */
+/*                                                         */
+/***********************************************************/ 
 
 #include "malloc.h"
 
@@ -54,7 +55,7 @@ void		ft_print_memory(void *addr, size_t size)
 	unsigned char	*adr;
 	size_t			i;
 
-	adr = (unsigned char*)addr;
+	adr = (unsigned char* )addr;
 	i = 0;
 	while (i < size)
 	{

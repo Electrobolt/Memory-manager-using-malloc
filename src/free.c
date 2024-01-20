@@ -1,14 +1,15 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   free.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/09/26 16:17:08 by banthony          #+#    #+#             */
-/*   Updated: 2017/10/03 15:05:59 by banthony         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+/***********************************************************/
+/*                                                         */
+/*                                                         */
+/*    free.c                                               */
+/*                                                         */
+/*    By: banthony <banthony@students.42.fr>               */
+/*    Recoded by: Electrobolt <pharelledo06@gmail.com>     */
+/*                                                         */
+/*    Created: 2017/09/26 16:17:08 by banthony             */
+/*    Updated: 2023/11/14 19:42:28 by Electrobolt          */
+/*                                                         */
+/***********************************************************/ 
 
 #include "malloc.h"
 
@@ -71,7 +72,7 @@ void		defrag_mem(t_page *p)
 
 	reserved = 0;
 	last = NULL;
-	d = (void*)&p->tag[DATA];
+	d = (void* )&p->tag[DATA];
 	while (d)
 	{
 		if (d->tag[STATE] == EMPTY && (d->next && d->next->tag[STATE] == EMPTY))
@@ -99,7 +100,7 @@ t_mdata		*find_ptr(void *ptr, t_page **p)
 	d = NULL;
 	while (*p)
 	{
-		d = (void*)&(*p)->tag[DATA];
+		d = (void* )&(*p)->tag[DATA];
 		while (d)
 		{
 			if (&d->tag[DATA] == ptr)

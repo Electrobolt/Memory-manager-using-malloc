@@ -1,14 +1,15 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   realloc.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/09/27 18:19:01 by banthony          #+#    #+#             */
-/*   Updated: 2017/10/03 19:08:22 by banthony         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+/***********************************************************/
+/*                                                         */
+/*                                                         */
+/*    realloc.c                                            */
+/*                                                         */
+/*    By: banthony <banthony@students.42.fr>               */
+/*    Recoded by: Electrobolt <pharelledo06@gmail.com>     */
+/*                                                         */
+/*    Created: 2017/09/27 18:19:01 by banthony             */
+/*    Updated: 2023/10/09 20:37:17 by Electrobolt          */
+/*                                                         */
+/***********************************************************/ 
 
 #include "malloc.h"
 
@@ -29,7 +30,7 @@ size_t			get_nb_block(t_page *p, char state)
 
 	n = 0;
 	size = 0;
-	d = (void*)&p->tag[DATA];
+	d = (void* )&p->tag[DATA];
 	while (d)
 	{
 		if (d->tag[STATE] == state || state == BLOCK)
@@ -56,7 +57,7 @@ static t_mdata	*fusion_mdata(t_mdata *d, size_t s)
 		offset = d->size;
 		d->next = target->next;
 		d->size += (MDATA_S + target->size);
-		ft_memset((void*)&d->tag[DATA + offset], 0, (MDATA_S + target->size));
+		ft_memset((void* )&d->tag[DATA + offset], 0, (MDATA_S + target->size));
 		if (d->size > (s + MDATA_S + DATA_MIN))
 			return (split_block(d, s));
 		return (d);
@@ -68,7 +69,7 @@ t_mdata			*split_block(t_mdata *d, size_t s)
 {
 	t_mdata	*new;
 
-	new = (void*)((char*)&d->tag[DATA] + s);
+	new = (void* )((char* )&d->tag[DATA] + s);
 	new->size = (d->size - (MDATA_S + s));
 	new->tag[STATE] = EMPTY;
 	new->next = d->next;
@@ -104,5 +105,5 @@ void			*realloc(void *ptr, size_t size)
 		free(ptr);
 		return (new);
 	}
-	return ((void*)&fusion->tag[DATA]);
+	return ((void* )&fusion->tag[DATA]);
 }

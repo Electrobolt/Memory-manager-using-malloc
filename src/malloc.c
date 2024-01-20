@@ -1,14 +1,15 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   malloc.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: banthony <banthony@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/08/21 15:09:11 by banthony          #+#    #+#             */
-/*   Updated: 2017/10/03 20:17:17 by banthony         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+/***********************************************************/
+/*                                                         */
+/*                                                         */
+/*    malloc.c                                             */
+/*                                                         */
+/*    By: banthony <banthony@students.42.fr>               */
+/*    Recoded by: Electrobolt <pharelledo06@gmail.com>     */
+/*                                                         */
+/*    Created: 2015/10/08 14:45:37 by banthony             */
+/*    Updated: 2023/10/12 20:33:01 by Electrobolt          */
+/*                                                         */
+/***********************************************************/ 
 
 #include "malloc.h"
 
@@ -39,7 +40,7 @@ t_page			*new_page(t_page *page, size_t s)
 	if ((p->tag[TYPE] = get_malloc_tag_type(s)) == LARGE)
 		p->tag[STATE] = FULL;
 	ft_strncpy(&p->tag[2], END_PAGE, 6);
-	d = (void*)&p->tag[DATA];
+	d = (void* )&p->tag[DATA];
 	d->size = s;
 	d->tag[STATE] = FULL;
 	ft_strncpy(&d->tag[2], END_DATA, 6);
@@ -58,7 +59,7 @@ static t_mdata	*fill_mdata(t_page *p, t_mdata *d)
 	size_t	reserved;
 
 	reserved = 0;
-	tmp = (void*)&p->tag[DATA];
+	tmp = (void* )&p->tag[DATA];
 	while (tmp)
 	{
 		reserved += tmp->size + MDATA_S;
@@ -76,7 +77,7 @@ static t_mdata	*add_mdata(t_page *p, t_mdata *last, size_t reserved, size_t s)
 
 	if (!p || !last)
 		return (NULL);
-	d = (void*)((char*)&last->tag[DATA] + last->size);
+	d = (void* )((char* )&last->tag[DATA] + last->size);
 	d->size = s;
 	d->tag[STATE] = FULL;
 	last->next = d;
@@ -97,7 +98,7 @@ t_mdata			*find_space(t_page *p, size_t s)
 		return (NULL);
 	reserved = 0;
 	last = NULL;
-	d = (void*)&p->tag[DATA];
+	d = (void* )&p->tag[DATA];
 	while (d)
 	{
 		reserved += (d->size + MDATA_S);
@@ -138,7 +139,7 @@ void			*malloc(size_t size)
 				return (NULL);
 		}
 		else
-			return ((void*)&tmp->tag[DATA]);
+			return ((void* )&tmp->tag[DATA]);
 	}
-	return ((void*)((char*)&p->tag[DATA] + MDATA_S));
+	return ((void* )((char* )&p->tag[DATA] + MDATA_S));
 }
